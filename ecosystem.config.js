@@ -10,6 +10,9 @@ module.exports = {
       name      : 'API',
       script    : './dist/index.js',
       watch     : true,
+      error_file: '../shared/logs/api-err.log',
+      out_file  : '../shared/logs/api-out.log',
+      pid_file  : '../shared/pids/api.pid',
       env: {
         NODE_ENV: 'development',
         DEBUG: '*'
@@ -31,7 +34,7 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'https://github.com/gogokoala/aipatn-api.git',
       path : '/mnt/disk1/www/aipatn/api/prod',
-      'post-deploy' : 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+      'post-deploy' : 'npm install && tsc --outDir dist && pm2 startOrRestart ecosystem.config.js --env production',
       env  : {
         NODE_ENV: 'production'
       }
