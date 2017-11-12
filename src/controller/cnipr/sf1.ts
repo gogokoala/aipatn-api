@@ -61,15 +61,20 @@ export async function search (ctx: Context, next: Function) {
         }
     })
 
-    const sf1Resp: sf1Response = res.data
+    let sf1Resp: sf1Response = res.data
     debug('search result = %o', sf1Resp)
-    if (parseInt(sf1Resp.status)) {
-        throw new Error(`${sf1Resp.status} - ${sf1Resp.message}`)
+    if (sf1Resp.status === '0') {
+        ctx.state.data = sf1Resp
+    } else {
+        ctx.state.error = {
+            code: sf1Resp.status,
+            message: sf1Resp.message
+        }
+        throw new Error(sf1Resp.message)
     }
 
     // TODO - 检索条件保存至Session
     // TODO- 检索条件保存至数据库
 
     
-    ctx.state.data = sf1Resp
 }

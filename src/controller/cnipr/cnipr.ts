@@ -43,9 +43,9 @@ export interface sectionInfo {
 export interface sf1Response {
     status: string
     message: string
-    total: number
-    from: number
-    to: number
-    results: Array<sf1Data>
-    sectionInfos: Array<sectionInfo>
+    total?: number
+    from?: number
+    to?: number
+    results?: Array<sf1Data>
+    sectionInfos?: Array<sectionInfo>
 }

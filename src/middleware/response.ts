@@ -27,9 +27,13 @@ export async function response (ctx: Context, next: Function) {
         ctx.status = 200
 
         // 输出详细的错误信息
-        ctx.body = {
-            code: -1,
-            error: e && e.message ? e.message : e.toString()
+        if (ctx.state.error) {
+            ctx.body = ctx.state.error
+        } else {
+            ctx.body = {
+                code: -1,
+                error: e && e.message ? e.message : e.toString()
+            }
         }
     }
 }
