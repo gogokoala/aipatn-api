@@ -6,6 +6,7 @@ import * as config from 'config'
 import { oauth2 } from './auth'
 import { sf1Data, sf1Response, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
+import { decodeBase64 } from '../../lib/base64';
 
 const debug = Debug('cnipr.sf1')
 
@@ -27,7 +28,7 @@ export async function search (ctx: Context, next: Function) {
      * exp 必选
      * dbs、order等 可选
      */
-    const exp = searchParams.exp
+    const exp = decodeExp(searchParams.exp)
     const dbs = searchParams.dbs ? searchParams.dbs : 'FMZL,FMSQ,SYXX,WGZL'
     const order = searchParams.order ? searchParams.order : ''
     const option = searchParams.option && parseInt(searchParams.option) < 3  ? searchParams.option : 2
@@ -75,6 +76,11 @@ export async function search (ctx: Context, next: Function) {
 
     // TODO - 检索条件保存至Session
     // TODO- 检索条件保存至数据库
+}
 
+function decodeExp(exp: string) {
+    const s = decodeBase64(exp)
+    debug('exp from base64 = %o', s)
     
+    return exp
 }
