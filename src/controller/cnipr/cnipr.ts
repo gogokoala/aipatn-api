@@ -1,3 +1,5 @@
+import { BaseStatusData } from "../../lib/error";
+
 export interface sf1Data {
     pid: string
     sysid: string
@@ -40,9 +42,7 @@ export interface sectionInfo {
     recordNum: number
 }
 
-export interface sf1Response {
-    status: string
-    message: string
+export interface sf1Response extends BaseStatusData {
     total?: number
     from?: number
     to?: number

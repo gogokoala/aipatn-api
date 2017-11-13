@@ -7,6 +7,7 @@ import { oauth2 } from './auth'
 import { sf1Data, sf1Response, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
 import { decodeBase64 } from '../../lib/base64';
+import { commonStatus } from '../../lib/error';
 
 const debug = Debug('cnipr.sf1')
 
@@ -63,15 +64,12 @@ export async function search (ctx: Context, next: Function) {
     })
 
     let sf1Resp: sf1Response = res.data
-    debug('search result = %o', sf1Resp)
+    debug('sf1 result = %s, %s', sf1Resp.status, sf1Resp.message)
     if (sf1Resp.status === '0') {
         ctx.state.data = sf1Resp
     } else {
-        ctx.state.error = {
-            code: sf1Resp.status,
-            message: sf1Resp.message
-        }
-        throw new Error(sf1Resp.message)
+        ctx.state.error = commonStatus.normalize(sf1Resp.status, sf1Resp.message)
+        throw new Error(ctx.state.error.message)
     }
 
     // TODO - 检索条件保存至Session
