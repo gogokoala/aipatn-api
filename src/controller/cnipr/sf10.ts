@@ -16,7 +16,7 @@ const debug = Debug('cnipr.sf1')
  * headers => x-session-id, auth
  * body => exp, dbs, order, option, from, to, displayCols
  */
-export async function sf1 (ctx: Context, next: Function) {
+export async function search (ctx: Context, next: Function) {
     const req = ctx.request;
     debug('req.body: %o', req.body)
 

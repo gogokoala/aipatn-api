@@ -9,19 +9,19 @@ import * as Debug from 'debug'
 import { decodeBase64 } from '../../lib/base64';
 import { commonStatus } from '../../lib/error';
 
-const debug = Debug('cnipr.sf1')
+const debug = Debug('cnipr.ft1')
 
 /**
  * Middleware sf1
  * headers => x-session-id, auth
  * body => exp, dbs, order, option, from, to, displayCols
  */
-export async function sf1 (ctx: Context, next: Function) {
+export async function ft1 (ctx: Context, next: Function) {
     const req = ctx.request;
     debug('req.body: %o', req.body)
 
     const searchParams = req.body
-    if (!searchParams || !searchParams.exp) {
+    if (!searchParams || !searchParams.pid) {
         throw new Error('无效的请求')
     }
     /**
@@ -29,32 +29,21 @@ export async function sf1 (ctx: Context, next: Function) {
      * exp 必选
      * dbs、order等 可选
      */
-    const exp = decodeExp(searchParams.exp)
-    const dbs = searchParams.dbs ? searchParams.dbs : 'FMZL,FMSQ,SYXX,WGZL'
-    const order = searchParams.order ? searchParams.order : ''
-    const option = searchParams.option && parseInt(searchParams.option) < 3  ? searchParams.option : 2
-    const from = searchParams.from && !isNaN(searchParams.from) ? searchParams.from : 0
-    const to = searchParams.to && !isNaN(searchParams.to) ? searchParams.to : 10
-    const displayCols = searchParams.displayCols ? searchParams.displayCols : ''
+    const pid = searchParams.pid
 
     const params = oauth2.getApiParams()
     const clientId = params.clientId
-    const url = 'https://open.cnipr.com/cnipr-api/rs/api/search/sf1/' + clientId
     const openId = params.openId
     const accessToken = params.accessToken
 
-    debug('exp = %s, dbs = %s', exp, dbs)
+    const url = 'https://open.cnipr.com/cnipr-api/rs/api/search/sf2/' + clientId
+
+    debug('pid = %s', pid)
     let res = await Axios({
         url: url,
-        method: 'post',
+        method: 'get',
         params:{
-            exp: exp,
-            dbs: dbs,
-            order: order,
-            option: option,
-            from: from,
-            to: to,
-            displayCols: displayCols,
+            pid: pid,
             openid: openId,
             access_token: accessToken
         },
@@ -74,11 +63,4 @@ export async function sf1 (ctx: Context, next: Function) {
 
     // TODO - 检索条件保存至Session
     // TODO- 检索条件保存至数据库
-}
-
-function decodeExp(exp: string) {
-    const s = decodeBase64(exp)
-    debug('exp from base64 = %o', s)
-    
-    return exp
 }
