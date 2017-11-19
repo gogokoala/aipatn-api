@@ -4,13 +4,12 @@ import { redisStore } from './redisstore'
 import * as Debug from 'debug'
 const debug = Debug('aipatn.session')
 
-export function session () {
-    const key = 'x-session-id'
-    const store = redisStore
+export function session (opts: any = {}) {
+    const { key = 'x-session-id', store = redisStore } = opts
 
     return async (ctx: Context, next: Function) => {
-        let id = ctx.headers[key]
-        debug('x-session-id: %s', id)
+        let id = ctx.cookies.get(key, opts)
+        debug('%s: %s', key, id)
 
         if(!id) {
             ctx.state.session = {}
@@ -38,20 +37,14 @@ export function session () {
 
         // need clear old session
         if(id && !ctx.state.session) {
+            debug('clear old session, %s', id)
             await store.destroy(id, ctx)
             return
         }
 
         // set/update session
-        let sid
-        if (id) {
-            sid = await store.set(ctx.state.session, id);
-        } else {
-            sid = await store.set(ctx.state.session);
-
-            // set headers
-            ctx.state.data.sid = sid
-        }
-
+        const sid = await store.set(ctx.state.session, Object.assign({}, opts, {sid: id}), ctx);
+        ctx.cookies.set(key, sid, opts);
+        debug('%s: %s', key, sid)
     }
 }
