@@ -41,7 +41,7 @@ export async function login (ctx: Context, next: Function) {
 
     // 验证用户
     const usrRepository = getManager().getRepository(User)
-    let vo = await usrRepository.findOne({ mobilePhone: user.phone })
+    let vo = await usrRepository.findOne({ userName: user.phone })
     
     if (!vo) {
         throw new Error('用户未注册')

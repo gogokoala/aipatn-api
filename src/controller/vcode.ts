@@ -61,14 +61,7 @@ export async function getVerificationCode (ctx: Context, next: Function) {
     // 维护Session
 //    const issueAt = moment().valueOf()
     const expireAt = moment().add(10, 'm').valueOf()
-    let session = ctx.state.session
-    if (session.user) {
-        session.user.name = phone
-    } else {
-        session.user = { name: phone }
-    }
-    session.verificationCode = { code: vcode, expireAt }
-    ctx.state.session = session
+    ctx.state.session.vcode = { mobile: phone, code: vcode, expireAt }
 
     // 发送短信
     if (!debug.enabled) {

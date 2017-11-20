@@ -23,14 +23,16 @@ export class User {
     @Column({
         type: 'varchar',
         length: 32,
-        collation: 'utf8mb4_unicode_ci'
+        collation: 'utf8mb4_unicode_ci',
+        default: ''
     })
     firstName: string;
 
     @Column({
         type: 'varchar',
         length: 32,
-        collation: 'utf8mb4_unicode_ci'
+        collation: 'utf8mb4_unicode_ci',
+        default: ''
     })
     lastName: string;
 
@@ -51,7 +53,8 @@ export class User {
     @Column({
         type: 'varchar',
         length: 16,
-        collation: 'utf8mb4_unicode_ci'
+        collation: 'utf8mb4_unicode_ci',
+        default: ''
     })
     mobile: string
 
