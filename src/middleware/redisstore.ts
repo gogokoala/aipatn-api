@@ -32,7 +32,7 @@ class RedisStore {
      * 读取Session值
      * @param sid Session ID
      */
-    async get(sid: string, ctx: Context) {
+    async get(sid: string, ctx?: Context) {
         let data = await this.client.get(`SESSION:${sid}`)
         return JSON.parse(data)
     }
@@ -43,7 +43,7 @@ class RedisStore {
      * @param sid Session ID
      * @param maxAge 最大存在时间(ms),默认30分钟
      */
-    async set(session: any, { sid =  this.getID(), maxAge = 1800000 } = {}, ctx: Context) {
+    async set(session: any, { sid =  this.getID(), maxAge = 1800000 } = {}, ctx?: Context) {
         try {
 /*
             if (!sid) {
@@ -62,7 +62,7 @@ class RedisStore {
      * 移除指定sid的Session
      * @param sid Session ID
      */
-    async destroy(sid: string, ctx: Context) {
+    async destroy(sid: string, ctx?: Context) {
         return await this.client.del(`SESSION:${sid}`);
     }
 }
