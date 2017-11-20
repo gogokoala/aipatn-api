@@ -59,9 +59,8 @@ export async function getVerificationCode (ctx: Context, next: Function) {
 */
 
     // 维护Session
-//    const issueAt = moment().valueOf()
     const expireAt = moment().add(10, 'm').valueOf()
-    ctx.state.session.vcode = { mobile: phone, code: vcode, expireAt }
+    ctx.state.session.vcode = { phone, code: vcode, expireAt }
 
     // 发送短信
     if (!debug.enabled) {

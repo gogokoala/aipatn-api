@@ -79,4 +79,13 @@ export class User {
         default: 'active'
     })
     state: string
+
+    @Column({
+        type: 'varchar',
+        length: 256,
+        collation: 'utf8mb4_unicode_ci',
+        default: ''
+    })
+    jwt: string
+    
 }

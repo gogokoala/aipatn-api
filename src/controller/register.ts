@@ -19,52 +19,67 @@ export async function register (ctx: Context, next: Function) {
     const user = req.body;
     debug('req.body: %o', req.body)
     
-    if (!user || !user.phone || !user.vcode) {
-        throw new Error('无效的请求')
+    if (!user || !user.p || !user.vc) {
+        throw new Error('无效的请求！')
     }
 
     let session = ctx.state.session
-    if (!session.user || !session.user.name || user.phone != session.user.name) {
-        throw new Error('手机号错误')
+    if (!session.vcode) {
+        throw new Error('请获取验证码！')
     }
 
-    if (!session.verificationCode || !session.verificationCode.code || !session.verificationCode.expireAt) {
-        throw new Error('请获取验证码')
+    if (moment().valueOf() >= session.vcode.expireAt) {
+        throw new Error('验证码已过期。请重新获取验证码！')
     }
-    if (user.vcode != session.verificationCode.code) {
-        throw new Error('验证码不正确')
-    }
-    if (moment().valueOf() >= session.verificationCode.expireAt) {
-        throw new Error('验证码已过期')
+
+    if (user.p != session.vcode.phone || user.vc != session.vcode.code) {
+        throw new Error('验证码错误！')
     }
 
     const usrRepository = getManager().getRepository(User)
-    let vo = await usrRepository.findOne({ mobilePhone: user.phone })
+    let vo = await usrRepository.findOne({ userName: user.p })
     
     if (vo) {
-        throw new Error('该手机号已注册')
+        throw new Error('该用户已存在！')
     }
     
     // 生成注册用户信息
     const now = moment().format('YYYY-MM-DD HH:mm:ss')
     vo = new User()
-    vo.username = user.phone
-    vo.password = '000000'
-    vo.mobilePhone = user.phone
-    vo.email = ''
+    vo.userName = user.p
+    vo.password = '123456'
+    vo.firstName = user.firstName ? user.firstName : ''
+    vo.lastName = user.lastName ? user.lastName : ''
+    vo.mobile = user.p
+    vo.email = user.email ? user.email : ''
     vo.emailVerified = false
     vo.createTime = now
     vo.lastLoginTime = now
     vo.state = 'active'
 
+    // jwt授权, 有效期2天
+    // 签发时间
+    const issuedAt = moment().valueOf()
+    // 失效时间
+    const expireAt = moment().add('d', 2).valueOf()
+    const jwtToken = await jwt.sign({
+        subject: user.p,
+        audience: 'api.aipatn.com',
+        issuer: 'aipatn.com',
+        iat: issuedAt,
+        exp: expireAt
+    }, jwtSecret)
+
     // 创建用户
     vo = await usrRepository.save(vo)
 
+    delete session.vcode
+    session.user.uid = vo.uid
+    session.user.logged = true
+    session.user.jwt = jwtToken
+
     // TODO - 更新日志
 
-    session.verificationCode = null
-    session.user.logged = true
     ctx.state.session = session
-
-    ctx.state.data = { status: 0, message: "恭喜您！注册成功" }
+    ctx.state.data = { status: 0, message: "恭喜您！注册成功", token: jwtToken }
 }

@@ -25,7 +25,7 @@ export function session (opts: any = {}) {
         
         const old = JSON.stringify(ctx.state.session)
 
-        await next();
+        await next()
 
         // if not changed
         if(old == JSON.stringify(ctx.state.session)) return
@@ -43,8 +43,8 @@ export function session (opts: any = {}) {
         }
 
         // set/update session
-        const sid = await store.set(ctx.state.session, Object.assign({}, opts, {sid: id}), ctx);
-        ctx.cookies.set(key, sid, opts);
+        const sid = await store.set(ctx.state.session, Object.assign({}, opts, {sid: id}), ctx)
+        ctx.cookies.set(key, sid, opts)
         debug('%s: %s', key, sid)
     }
 }

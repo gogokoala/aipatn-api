@@ -19,32 +19,30 @@ export async function login (ctx: Context, next: Function) {
     const req = ctx.request;
     const user = req.body;
     debug('req.body: %o', req.body)
-    
-    if (!user || !user.phone || !user.vcode) {
-        throw new Error('无效的请求')
-    }
-    let session = ctx.state.session
-    if (!session.user || !session.user.name || user.phone != session.user.name) {
-        throw new Error('手机号错误')
-    }
-    if (!session.user.logged) {
-        if (!session.verificationCode || !session.verificationCode.code || !session.verificationCode.expireAt) {
-            throw new Error('请获取验证码')
-        }
-        if (user.vcode != session.verificationCode.code) {
-            throw new Error('验证码不正确')
-        }
-        if (moment().valueOf() >= session.verificationCode.expireAt) {
-            throw new Error('验证码已过期')
-        }
+
+    if (!user || !user.p || !user.vc) {
+        throw new Error('无效的请求！')
     }
 
+    let session = ctx.state.session
+    if (!session.vcode) {
+        throw new Error('请获取验证码！')
+    }
+
+    if (moment().valueOf() >= session.vcode.expireAt) {
+        throw new Error('验证码已过期。请重新获取验证码！')
+    }
+
+    if (user.p != session.vcode.phone || user.vc != session.vcode.code) {
+        throw new Error('验证码错误！')
+    }
+    
     // 验证用户
     const usrRepository = getManager().getRepository(User)
-    let vo = await usrRepository.findOne({ userName: user.phone })
+    let vo = await usrRepository.findOne({ userName: user.p })
     
     if (!vo) {
-        throw new Error('用户未注册')
+        throw new Error('用户不存在')
     }
 
     if (vo.state !== 'active') {
@@ -53,31 +51,42 @@ export async function login (ctx: Context, next: Function) {
 
     // jwt
     let jwtToken
-    if (session.user.jwt) {
+    if (session.user && session.user.jwt) {
         jwtToken = session.user.jwt
     } else {
         jwtToken = vo.jwt
     }
+
     if (jwtToken) {
         // 校验jwt
         try {
-            const jwtDecoded = jwt.verify(jwtToken, jwtSecret);
+            const jwtDecoded = await jwt.verify(jwtToken, jwtSecret, { 
+                subject: user.p,
+                audience: 'api.aipatn.com',
+                issuer: 'aipatn.com'
+            });
             debug('jwt decoded: %o', jwtDecoded)
-        } catch(err) {
+        } catch(e) {
+            // 无效jwt
             jwtToken = ''
         }
     }
     
     if (!jwtToken) {
         // jwt授权, 有效期2天
+        // 签发时间
         const issuedAt = moment().valueOf()
+        // 失效时间
         const expireAt = moment().add('d', 2).valueOf()
-        const jwtToken = await jwt.sign({ 
-            iss: user.phone,
+        jwtToken = await jwt.sign({
+            subject: user.p,
+            audience: 'api.aipatn.com',
+            issuer: 'aipatn.com',
             iat: issuedAt,
             exp: expireAt
         }, jwtSecret)
     }
+
     vo.jwt = jwtToken
     session.user.jwt = jwtToken
 
@@ -88,9 +97,10 @@ export async function login (ctx: Context, next: Function) {
     vo = await usrRepository.save(vo)
 
     // 更新Session
-    session.verificationCode = null
+    delete session.vcode
 
     // TODO - 更新日志
     
-    ctx.state.data = { status: 0, message: "登录成功", jwt: jwtToken }
+    ctx.state.session = session
+    ctx.state.data = { status: 0, message: "登录成功", token: jwtToken }
 }
