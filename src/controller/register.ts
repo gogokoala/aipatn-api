@@ -69,6 +69,7 @@ export async function register (ctx: Context, next: Function) {
         iat: issuedAt,
         exp: expireAt
     }, jwtSecret)
+    vo.jwt = jwtToken
 
     // 创建用户
     vo = await usrRepository.save(vo)
