@@ -59,7 +59,7 @@ createConnection().then(async connection => {
     // Session处理
     app.use(session())
 
-    app.use(routeLimiting({ maxAllowedRequest: 4 }).unless({
+    app.use(routeLimiting({ maxAllowedRequest: 4, maxQueueLength: 200 }).unless({
         path: [/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/]
     }))
 

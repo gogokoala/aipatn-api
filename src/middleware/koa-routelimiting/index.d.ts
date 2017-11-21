@@ -13,6 +13,7 @@ declare namespace routeLimiting {
 
     export interface Options {
         maxAllowedRequest?: number;
+        maxQueueLength?: number;
         debug?: boolean;
     }
 

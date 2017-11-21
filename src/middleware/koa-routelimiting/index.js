@@ -6,12 +6,12 @@ var debug = require('debug')('routelimiting')
 
 module.exports = (opts = {}) => {
 
-    const { maxAllowedRequest = 4 } = opts
+    const { maxAllowedRequest = 4, maxQueueLength = 200 } = opts
     let queue = []
     let counter = 0
 
     const middleware = async function routeLimiting(ctx, next) {
-        if (queue.length > maxAllowedRequest) {
+        if (queue.length > maxQueueLength) {
             throw new Error('Server is too busy!!')
         }
         
@@ -26,7 +26,12 @@ module.exports = (opts = {}) => {
             debug('shift %d', counter)
         }
 
-        await next();
+        let err
+        try {
+            await next();
+        } catch (e) {
+            err = e
+        }
         counter--;
         debug('counter-- = %d', counter)
         
@@ -34,6 +39,10 @@ module.exports = (opts = {}) => {
         if (resolve) {
             debug('run resolve %d', counter)
             resolve()
+        }
+
+        if (err) {
+            throw err
         }
     }
 
