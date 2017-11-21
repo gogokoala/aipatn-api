@@ -10,6 +10,7 @@ import * as Debug from 'debug'
 import * as jwtKoa from 'koa-jwt'
 import { oauth2 } from './controller/cnipr/auth'
 import * as cors from 'koa2-cors'
+import * as routeLimiting from './middleware/koa-routelimiting'
 
 const debug = Debug('aipatn.server')
 
@@ -59,7 +60,7 @@ createConnection().then(async connection => {
     app.use(session())
 
     app.use(routeLimiting({ maxAllowedRequest: 4 }).unless({
-        path: [/^\/ping/,/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/]
+        path: [/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/]
     }))
 
     // 路由处理

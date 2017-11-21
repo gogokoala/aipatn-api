@@ -12,6 +12,9 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
+        "allowJs": true,
+        "strict": true,
+        "outDir": "./dist",
         "types": [ "node" ]
     },
     "include": [

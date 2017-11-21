@@ -7,11 +7,12 @@ import Koa = require("koa");
 
 export = routeLimiting;
 
-declare function routeLimiting(options: RouteLimiting.Options): RouteLimiting.Middleware;
+declare function routeLimiting(options: routeLimiting.Options): routeLimiting.Middleware;
 
-declare namespace RouteLimiting {
+declare namespace routeLimiting {
+
     export interface Options {
-        maxAllowedRequest?: number
+        maxAllowedRequest?: number;
         debug?: boolean;
     }
 
