@@ -58,6 +58,10 @@ createConnection().then(async connection => {
     // Session处理
     app.use(session())
 
+    app.use(routeLimiting({ maxAllowedRequest: 4 }).unless({
+        path: [/^\/ping/,/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/]
+    }))
+
     // 路由处理
     app.use(router.routes())
     app.use(router.allowedMethods())
