@@ -1,13 +1,13 @@
+import * as path from 'path';
+import * as fs from 'fs';
 import { Context } from 'koa'
 import Axios from 'axios'
-import { redisStore } from '../../middleware/redisstore'
 import * as moment from 'moment'
 import * as config from 'config'
 import { oauth2 } from './auth'
-import { sf1Data, sf1Response, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
-import { decodeBase64 } from '../../lib/base64';
 import { commonStatus } from '../../lib/error';
+import { ByteRange } from 'express-serve-static-core';
 
 const debug = Debug('cnipr.ft1')
 
@@ -18,27 +18,20 @@ const debug = Debug('cnipr.ft1')
  */
 export async function ft1 (ctx: Context, next: Function) {
     const req = ctx.request;
-    debug('req.body: %o', req.body)
+    debug('req.body: %o', req.query)
 
-    const searchParams = req.body
-    if (!searchParams || !searchParams.pid) {
+    if (!req.query || !req.query.pid) {
         throw new Error('无效的请求')
     }
-    /**
-     * 下列参加中
-     * exp 必选
-     * dbs、order等 可选
-     */
-    const pid = searchParams.pid
+
+    const pid = req.query.pid
 
     const params = oauth2.getApiParams()
     const clientId = params.clientId
     const openId = params.openId
     const accessToken = params.accessToken
 
-    const url = 'https://open.cnipr.com/cnipr-api/rs/api/search/sf2/' + clientId
-
-    debug('pid = %s', pid)
+    const url = 'https://open.cnipr.com/cnipr-api/rs/api/fulltext/ft1/' + clientId
     let res = await Axios({
         url: url,
         method: 'get',
@@ -47,20 +40,27 @@ export async function ft1 (ctx: Context, next: Function) {
             openid: openId,
             access_token: accessToken
         },
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+        responseType: 'arraybuffer'
+    })
+
+    const file = `${pid}.pdf`
+    fs.open(path.join(__dirname, file), 'w', function (err, fd) {
+        if (err) {
+            throw err
+        } else {
+            debug('res.data = %o', res.headers)
+
+            const buffer = res.data;
+            debug('buffer byte length: %d', buffer.byteLength)
+            const written = fs.writeSync(fd, buffer, 0, buffer.byteLength, 0)
+            debug('written: %d', written)
+            
+            fs.close(fd, (err) => {
+                if (err) throw err
+            })
         }
     })
 
-    let sf1Resp: sf1Response = res.data
-    debug('sf1 result = %s, %s', sf1Resp.status, sf1Resp.message)
-    if (sf1Resp.status === '0') {
-        ctx.state.data = sf1Resp
-    } else {
-        ctx.state.error = commonStatus.normalize(sf1Resp.status, sf1Resp.message)
-        throw new Error(ctx.state.error.message)
-    }
-
-    // TODO - 检索条件保存至Session
-    // TODO- 检索条件保存至数据库
+    ctx.state.data = { status: 0, message: "OK", fileUrl: file }
 }
+

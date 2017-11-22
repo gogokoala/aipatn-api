@@ -27,6 +27,6 @@ router.post('/login', login)
 
 router.post('/sf1', sf1)
 
-router.post('/sf2', sf2)
+router.get('/sf2', sf2)
 
-router.post('/ft1', ft1)
+router.get('/ft1', ft1)
