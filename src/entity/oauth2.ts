@@ -1,6 +1,9 @@
 import {Entity, PrimaryColumn, Column} from "typeorm"
 
-@Entity()
+@Entity({
+    database: 'oauth2',
+    engine: 'MyISAM'    
+})
 export class OAuth2 {
 
     @PrimaryColumn({

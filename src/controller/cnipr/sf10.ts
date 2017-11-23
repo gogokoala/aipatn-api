@@ -4,7 +4,7 @@ import { redisStore } from '../../middleware/redisstore'
 import * as moment from 'moment'
 import * as config from 'config'
 import { oauth2 } from './auth'
-import { sf1Data, sf1Response, sectionInfo } from './cnipr'
+import { sf1Data, PatentResponse, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
 import { decodeBase64 } from '../../lib/base64';
 import { commonStatus } from '../../lib/error';
@@ -63,7 +63,7 @@ export async function search (ctx: Context, next: Function) {
         }
     })
 
-    let sf1Resp: sf1Response = res.data
+    let sf1Resp: PatentResponse = res.data
     debug('sf1 result = %s, %s', sf1Resp.status, sf1Resp.message)
     if (sf1Resp.status === '0') {
         ctx.state.data = sf1Resp

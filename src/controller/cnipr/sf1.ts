@@ -5,12 +5,12 @@ import { redisStore } from '../../middleware/redisstore'
 import * as moment from 'moment'
 import * as config from 'config'
 import { oauth2 } from './auth'
-import { sf1Data, sf1Response, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
 import { decodeBase64 } from '../../lib/base64';
 import { sha1 } from '../../lib/sha1';
 import { commonStatus } from '../../lib/error';
 import { Sf1History } from '../../entity/sf1history';
+import { PatentResponse } from './cnipr';
 
 const debug = Debug('cnipr.sf1')
 
@@ -20,7 +20,7 @@ const debug = Debug('cnipr.sf1')
  * body => exp, dbs, order, option, from, to, displayCols
  */
 export async function sf1 (ctx: Context, next: Function) {
-    let sf1Resp: sf1Response
+    let sf1Resp: PatentResponse
 
     const req = ctx.request;
     debug('req.body: %o', req.body)
@@ -97,8 +97,8 @@ export async function sf1 (ctx: Context, next: Function) {
     if (sf1Resp.status === '0') {
         ctx.state.data = sf1Resp
 
+        // 登录用户，则保存检索条件
         if (ctx.state.session.logged && ctx.state.session.uid) {
-            // 保存检索条件
             const dbRepository = getManager().getRepository(Sf1History)
 
             // 生成对象
@@ -119,7 +119,4 @@ export async function sf1 (ctx: Context, next: Function) {
         ctx.state.error = commonStatus.normalize(sf1Resp.status, sf1Resp.message)
         throw new Error(ctx.state.error.message)
     }
-
-    // TODO - 检索条件保存至Session
-    // TODO- 检索条件保存至数据库
 }

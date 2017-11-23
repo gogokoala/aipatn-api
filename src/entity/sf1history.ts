@@ -1,6 +1,9 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 
-@Entity()
+@Entity({
+    database: 'sf1_history',
+    engine: 'MyISAM'    
+})
 export class Sf1History {
 
     @PrimaryGeneratedColumn()
