@@ -4,7 +4,7 @@ import { redisStore } from '../../middleware/redisstore'
 import * as moment from 'moment'
 import * as config from 'config'
 import { oauth2 } from './auth'
-import { sf1Data, PatentResponse, sectionInfo } from './cnipr'
+import { PatentResponse, sectionInfo } from './cnipr'
 import * as Debug from 'debug'
 import { decodeBase64 } from '../../lib/base64';
 import { commonStatus } from '../../lib/error';

@@ -1,3 +1,4 @@
+import {getManager} from 'typeorm';
 import { Context } from 'koa'
 import Axios from 'axios'
 import * as moment from 'moment'
@@ -6,6 +7,7 @@ import { oauth2 } from './auth'
 import * as Debug from 'debug'
 import { commonStatus } from '../../lib/error';
 import { PatentResponse } from './cnipr';
+import { Patent } from '../../entity/patent';
 
 const debug = Debug('cnipr.sf2')
 
@@ -46,6 +48,19 @@ export async function sf2 (ctx: Context, next: Function) {
     debug('sf1 result = %s, %s', sf2Resp.status, sf2Resp.message)
     if (sf2Resp.status === '0') {
         ctx.state.data = sf2Resp
+
+        // 保存cnipr数据到本地数据库
+        const patentItems = sf2Resp.results
+        if (patentItems) {
+            const dbRepository = getManager().getRepository(Patent)
+            for (let i = 0; i < patentItems.length; i++) {
+                const r = patentItems[i]
+                let vo = await dbRepository.findOne({ pid: r.pid  })
+                if (!vo) {
+                    vo = await dbRepository.save(r)
+                }
+            }
+        }
     } else {
         ctx.state.error = commonStatus.normalize(sf2Resp.status, sf2Resp.message)
         throw new Error(ctx.state.error.message)

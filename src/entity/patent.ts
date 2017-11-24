@@ -1,7 +1,6 @@
 import {Entity, PrimaryColumn, Column} from "typeorm"
 
-@Entity({
-    database: 'pat',
+@Entity('patent', {
     engine: 'MyISAM'    
 })
 export class Patent {
@@ -18,6 +17,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: 'sysid'
     })
     sysid: string
@@ -26,6 +26,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '申请号'
     })
     appNumber: string
@@ -34,6 +35,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '公开（公告）号'
     })
     pubNumber: string
@@ -42,6 +44,7 @@ export class Patent {
         type: 'varchar',
         length: 10,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '申请日'
     })
     appDate: string
@@ -50,6 +53,7 @@ export class Patent {
         type: 'varchar',
         length: 10,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '公开（公告）日'
     })
     pubDate: string
@@ -58,38 +62,40 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '名称'
     })
     title: string
 
     @Column({
-        type: 'varchar',
-        length: 256,
+        type: 'simple-array',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '分类号'
     })
-    ipc: string
+    ipc: string[]
 
     @Column({
-        type: 'varchar',
-        length: 128,
+        type: 'simple-array',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '申请（专利权）人'
     })
-    applicantName: string
+    applicantName: string[]
 
     @Column({
-        type: 'varchar',
-        length: 128,
+        type: 'simple-array',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '发明（设计）人'
     })
-    inventroName: string
+    inventroName: string[]
 
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '优先权'
     })
     priority: string
@@ -98,38 +104,42 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '专利代理机构'
     })
     agencyName: string
 
     @Column({
-        type: 'varchar',
-        length: 128,
+        type: 'simple-array',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '代理人'
     })
     agentName: string
 
     @Column({
         type: 'varchar',
-        length: 32,
+        length: 64,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '省'
     })
     addrProvince: string
 
     @Column({
         type: 'varchar',
-        length: 32,
+        length: 64,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '市'
     })
     addrCity: string
 
     @Column({
         type: 'varchar',
-        length: 32,
+        length: 64,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '县'
     })
     addrCounty: string
@@ -138,6 +148,7 @@ export class Patent {
         type: 'varchar',
         length: 256,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '地址'
     })
     address: string
@@ -145,6 +156,7 @@ export class Patent {
     @Column({
         type: 'int',
         collation: 'utf8mb4_unicode_ci',
+        default: 0,
         comment: '专利类型'
     })
     patType: number
@@ -153,6 +165,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '国际申请'
     })
     iapp: string
@@ -161,6 +174,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '国际公布'
     })
     ipub: string
@@ -169,6 +183,7 @@ export class Patent {
         type: 'varchar',
         length: 10,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '进入国家日期'
     })
     den: string
@@ -176,6 +191,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '摘要'
     })
     abs: string
@@ -184,6 +200,7 @@ export class Patent {
         type: 'varchar',
         length: 16,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '最新法律状态'
     })
     lprs: string
@@ -192,6 +209,7 @@ export class Patent {
         type: 'varchar',
         length: 256,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '摘要附图存储路径'
     })
     draws: string
@@ -200,6 +218,7 @@ export class Patent {
         type: 'varchar',
         length: 64,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '专利所属库名'
     })
     dbName: string
@@ -208,6 +227,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '发布路径'
     })
     tifDistributePath: string
@@ -215,6 +235,7 @@ export class Patent {
     @Column({
         type: 'int',
         collation: 'utf8mb4_unicode_ci',
+        default: 0,
         comment: '页数'
     })
     pages: number
@@ -223,6 +244,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '相似度'
     })
     relevance: string
@@ -231,6 +253,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '国省代码'
     })
     proCode: string
@@ -239,6 +262,7 @@ export class Patent {
         type: 'varchar',
         length: 8,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '申请国代码'
     })
     appCoun: string
@@ -247,6 +271,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '公报发布路径'
     })
     gazettePath: string
@@ -254,6 +279,7 @@ export class Patent {
     @Column({
         type: 'int',
         collation: 'utf8mb4_unicode_ci',
+        default: 0,
         comment: '公报所在页'
     })
     gazettePage: number
@@ -261,6 +287,7 @@ export class Patent {
     @Column({
         type: 'int',
         collation: 'utf8mb4_unicode_ci',
+        default: 0,
         comment: '公报翻页信息'
     })
     gazetteCount: number
@@ -269,6 +296,7 @@ export class Patent {
         type: 'varchar',
         length: 8,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '专利状态码'
     })
     statusCode: string
@@ -277,6 +305,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '法律状态'
     })
     legalStatus: string
@@ -285,6 +314,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '主分类号'
     })
     mainIpc: string
@@ -293,6 +323,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '国家资源'
     })
     appResource: string
@@ -301,6 +332,7 @@ export class Patent {
         type: 'varchar',
         length: 64,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '同族号'
     })
     familyNo: string
@@ -308,6 +340,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '主权项'
     })
     cl: string
@@ -315,6 +348,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '关键词'
     })
     patentWords: string
@@ -323,6 +357,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '自动摘要'
     })
     autoAbs: string
@@ -330,13 +365,16 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '权利要求书'
     })
     claimsPath: string
 
     @Column({
-        type: 'text',
+        type: 'varchar',
+        length: 256,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: ''
     })
     cipPath: string
@@ -344,6 +382,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '说明书'
     })
     instrPath: string
@@ -351,6 +390,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '说明书附图'
     })
     instrTif: string
@@ -359,6 +399,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '审查员'
     })
     censor: string
@@ -366,6 +407,7 @@ export class Patent {
     @Column({
         type: 'text',
         collation: 'utf8mb4_unicode_ci',
+        nullable: true,
         comment: '参考文献'
     })
     refDoc: string
@@ -374,6 +416,7 @@ export class Patent {
         type: 'varchar',
         length: 10,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '优先权日'
     })
     priorityDate: string
@@ -382,6 +425,7 @@ export class Patent {
         type: 'varchar',
         length: 10,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '颁证日'
     })
     issueDate: string
@@ -390,6 +434,7 @@ export class Patent {
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '本国主分类号'
     })
     initMainIpc: string
@@ -398,6 +443,7 @@ export class Patent {
         type: 'varchar',
         length: 256,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '本国分类号'
     })
     initIpc: string
@@ -406,6 +452,7 @@ export class Patent {
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci',
+        default: '',
         comment: '分案原申请号'
     })
     divideInitAppNo: string

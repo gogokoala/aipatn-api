@@ -11,6 +11,7 @@ import { sha1 } from '../../lib/sha1';
 import { commonStatus } from '../../lib/error';
 import { Sf1History } from '../../entity/sf1history';
 import { PatentResponse } from './cnipr';
+import { Patent } from '../../entity/patent';
 
 const debug = Debug('cnipr.sf1')
 
@@ -115,6 +116,20 @@ export async function sf1 (ctx: Context, next: Function) {
             // Save
             vo = await dbRepository.save(vo)        
         }
+
+        // 保存cnipr数据到本地数据库
+        const patentItems = sf1Resp.results
+        if (patentItems) {
+            const dbRepository = getManager().getRepository(Patent)
+            for (let i = 0; i < patentItems.length; i++) {
+                const r = patentItems[i]
+                let vo = await dbRepository.findOne({ pid: r.pid  })
+                if (!vo) {
+                    vo = await dbRepository.save(r)
+                }
+            }
+        }
+        
     } else {
         ctx.state.error = commonStatus.normalize(sf1Resp.status, sf1Resp.message)
         throw new Error(ctx.state.error.message)

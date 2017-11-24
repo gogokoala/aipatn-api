@@ -1,4 +1,5 @@
 import { BaseStatusData } from '../../lib/error'
+import { Patent } from '../../entity/patent';
 
 export interface sectionInfo {
     sectionName: string
@@ -66,6 +67,6 @@ export interface PatentResponse extends BaseStatusData {
     total?: number
     from?: number
     to?: number
-    results?: Array<PatentInfo>
+    results?: Array<Patent>
     sectionInfos?: Array<sectionInfo>
 }

@@ -1,7 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 
-@Entity({
-    database: 'user',
+@Entity('user', {
     engine: 'MyISAM'    
 })
 export class User {
