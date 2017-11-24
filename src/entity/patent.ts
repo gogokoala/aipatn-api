@@ -303,7 +303,7 @@ export class Patent {
 
     @Column({
         type: 'varchar',
-        length: 32,
+        length: 256,
         collation: 'utf8mb4_unicode_ci',
         default: '',
         comment: '法律状态'
