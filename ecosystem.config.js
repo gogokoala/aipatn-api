@@ -10,9 +10,9 @@ module.exports = {
       name      : 'API',
       script    : './dist/index.js',
       watch     : true,
-      error_file: '../shared/logs/api-err.log',
-      out_file  : '../shared/logs/api-out.log',
-      pid_file  : '../shared/pids/api.pid',
+      error_file: '/mnt/disk1/www/logs/api-err.log',
+      out_file  : '/mnt/disk1/www/logs/api-out.log',
+      pid_file  : '/mnt/disk1/www/pids/api.pid',
       env: {
         NODE_ENV: 'development',
         DEBUG: '*'
