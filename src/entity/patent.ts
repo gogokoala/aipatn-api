@@ -92,13 +92,12 @@ export class Patent {
     inventroName: string[]
 
     @Column({
-        type: 'varchar',
-        length: 32,
+        type: 'simple-array',
         collation: 'utf8mb4_unicode_ci',
-        default: '',
+        nullable: true,
         comment: '优先权'
     })
-    priority: string
+    priority: string[]
 
     @Column({
         type: 'varchar',

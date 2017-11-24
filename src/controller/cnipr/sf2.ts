@@ -28,6 +28,16 @@ export async function sf2 (ctx: Context, next: Function) {
 
     const pid = req.query.pid
 
+    // 本地已存在
+    const dbPatent = getManager().getRepository(Patent)
+    let vo = await dbPatent.findOne({ pid: pid  })
+    if (vo) {
+        sf2Resp = { status: '0', message: 'SUCCESS', results: [ vo ] }
+        ctx.state.data = sf2Resp
+        return
+    }
+
+    // 本地不存在，去cnipr获取
     const params = oauth2.getApiParams()
     const clientId = params.clientId
     const openId = params.openId
@@ -52,15 +62,12 @@ export async function sf2 (ctx: Context, next: Function) {
         // 保存cnipr数据到本地数据库
         const patentItems = sf2Resp.results
         if (patentItems) {
-            const dbRepository = getManager().getRepository(Patent)
             for (let i = 0; i < patentItems.length; i++) {
                 const r = patentItems[i]
-                let vo = await dbRepository.findOne({ pid: r.pid  })
-                if (!vo) {
-                    vo = await dbRepository.save(r)
-                }
+                vo = await dbPatent.save(r)
             }
         }
+
     } else {
         ctx.state.error = commonStatus.normalize(sf2Resp.status, sf2Resp.message)
         throw new Error(ctx.state.error.message)

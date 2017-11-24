@@ -116,7 +116,7 @@ export async function sf1 (ctx: Context, next: Function) {
             // Save
             vo = await dbRepository.save(vo)        
         }
-
+/*
         // 保存cnipr数据到本地数据库
         const patentItems = sf1Resp.results
         if (patentItems) {
@@ -129,7 +129,7 @@ export async function sf1 (ctx: Context, next: Function) {
                 }
             }
         }
-        
+*/        
     } else {
         ctx.state.error = commonStatus.normalize(sf1Resp.status, sf1Resp.message)
         throw new Error(ctx.state.error.message)
