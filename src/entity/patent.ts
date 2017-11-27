@@ -188,7 +188,7 @@ export class Patent {
     den: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '摘要'
@@ -337,7 +337,7 @@ export class Patent {
     familyNo: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '主权项'
@@ -354,7 +354,7 @@ export class Patent {
 
     //sf2
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '自动摘要'
@@ -362,7 +362,7 @@ export class Patent {
     autoAbs: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '权利要求书'
@@ -379,7 +379,7 @@ export class Patent {
     cipPath: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '说明书'
@@ -387,7 +387,7 @@ export class Patent {
     instrPath: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '说明书附图'
@@ -404,7 +404,7 @@ export class Patent {
     censor: string
 
     @Column({
-        type: 'text',
+        type: 'mediumtext',
         collation: 'utf8mb4_unicode_ci',
         nullable: true,
         comment: '参考文献'

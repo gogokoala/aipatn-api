@@ -1,3 +1,4 @@
+import {redisStore} from '../../middleware/redisstore';
 import {getManager} from 'typeorm';
 import { Context } from 'koa'
 import Axios from 'axios'
@@ -28,6 +29,15 @@ export async function sf2 (ctx: Context, next: Function) {
 
     const pid = req.query.pid
 
+    // 查看缓存
+    const cacheKey = pid
+    sf2Resp = await redisStore.get(cacheKey, ctx)
+    if (sf2Resp) {
+        debug('cached sf1 result = %s, %s', sf2Resp.status, sf2Resp.message)
+        ctx.state.data = sf2Resp
+        return
+    } 
+
     // 本地已存在
     const dbPatent = getManager().getRepository(Patent)
     let vo = await dbPatent.findOne({ pid: pid  })
@@ -56,9 +66,14 @@ export async function sf2 (ctx: Context, next: Function) {
 
     sf2Resp = res.data
     debug('sf1 result = %s, %s', sf2Resp.status, sf2Resp.message)
+
     if (sf2Resp.status === '0') {
         ctx.state.data = sf2Resp
 
+        // redis缓冲数据, 30分钟
+        await redisStore.set(sf2Resp, {sid: cacheKey}, ctx);
+    
+/*        
         // 保存cnipr数据到本地数据库
         const patentItems = sf2Resp.results
         if (patentItems) {
@@ -74,7 +89,7 @@ export async function sf2 (ctx: Context, next: Function) {
                 vo = await dbPatent.save(r)
             }
         }
-
+*/
     } else {
         ctx.state.error = commonStatus.normalize(sf2Resp.status, sf2Resp.message)
         throw new Error(ctx.state.error.message)
