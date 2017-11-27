@@ -64,6 +64,13 @@ export async function sf2 (ctx: Context, next: Function) {
         if (patentItems) {
             for (let i = 0; i < patentItems.length; i++) {
                 const r = patentItems[i]
+                // 处理priority中的逗号,注意取出时需恢复
+                if (r.priority) {
+                    for (let j = 0; j < r.priority.length; j++) {
+                          const p = r.priority[j]
+                          r.priority[i] = p.replace(/,/g, ';')
+                    }
+                }
                 vo = await dbPatent.save(r)
             }
         }
