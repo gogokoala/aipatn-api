@@ -21,7 +21,7 @@ export async function sf2 (ctx: Context, next: Function) {
     let sf2Resp: PatentResponse
 
     const req = ctx.request
-    debug('req.body: %o', req.query)
+    debug('req.query: %o', req.query)
 
     if (!req.query || !req.query.pid) {
         throw new Error('无效的请求')
@@ -33,7 +33,7 @@ export async function sf2 (ctx: Context, next: Function) {
     const cacheKey = pid
     sf2Resp = await redisStore.get(cacheKey, ctx)
     if (sf2Resp) {
-        debug('cached sf1 result = %s, %s', sf2Resp.status, sf2Resp.message)
+        debug('sf2 data from cached. result = %s, %s', sf2Resp.status, sf2Resp.message)
         ctx.state.data = sf2Resp
         return
     } 
@@ -42,8 +42,13 @@ export async function sf2 (ctx: Context, next: Function) {
     const dbPatent = getManager().getRepository(Patent)
     let vo = await dbPatent.findOne({ pid: pid  })
     if (vo) {
+        debug('sf2 data from local database.')
         sf2Resp = { status: '0', message: 'SUCCESS', results: [ vo ] }
         ctx.state.data = sf2Resp
+
+        // redis缓冲数据, 30分钟
+        await redisStore.set(sf2Resp, {sid: cacheKey}, ctx);
+        
         return
     }
 
@@ -65,7 +70,7 @@ export async function sf2 (ctx: Context, next: Function) {
     })
 
     sf2Resp = res.data
-    debug('sf1 result = %s, %s', sf2Resp.status, sf2Resp.message)
+    debug('sf2 data from cnipr. result = %s, %s', sf2Resp.status, sf2Resp.message)
 
     if (sf2Resp.status === '0') {
         ctx.state.data = sf2Resp
