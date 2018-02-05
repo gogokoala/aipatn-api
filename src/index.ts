@@ -47,7 +47,16 @@ createConnection().then(async connection => {
     // unless the URL starts with '/api/login, /api/register'
     const jwtSecret = config.get<string>('jwtSecret')
     app.use(jwtKoa({ secret: jwtSecret }).unless({
-        path: [/^\/ping/,/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/,/^\/sf1/,/^\/sf2/,/^\/ft1/]
+        path: [
+            /^\/ping/,
+            /^\/sid/,
+            /^\/vcode/,
+            /^\/register/,
+            /^\/login/,
+            /^\/sf1/,
+            /^\/sf2/,
+            /^\/ft1/,
+        ]
     }))
 
     // 使用响应处理中间件
@@ -60,7 +69,12 @@ createConnection().then(async connection => {
     app.use(session())
 
     app.use(routeLimiting({ maxAllowedRequest: 4, maxQueueLength: 200 }).unless({
-        path: [/^\/sid/,/^\/vcode/,/^\/register/,/^\/login/]
+        path: [
+            /^\/sid/,
+            /^\/vcode/,
+            /^\/register/,
+            /^\/login/,
+        ]
     }))
 
     // 路由处理
