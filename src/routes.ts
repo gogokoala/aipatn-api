@@ -8,6 +8,7 @@ import { register } from './controller/register'
 import { sf1 } from './controller/cnipr/sf1'
 import { sf2 } from './controller/cnipr/sf2'
 import { ft1 } from './controller/cnipr/ft1'
+import { uploadService } from './controller/upload';
 
 
 /**
@@ -30,3 +31,5 @@ router.post('/sf1', sf1)
 router.get('/sf2', sf2)
 
 router.get('/ft1', ft1)
+
+router.post('/upload', uploadService)
