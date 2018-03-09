@@ -61,3 +61,4 @@ typings/
 dist/
 config/
 history.md
+package-lock.json
