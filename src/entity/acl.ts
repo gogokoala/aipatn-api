@@ -14,7 +14,7 @@ export class ACL {
         default: 0,
         comment: '激活状态'
     })
-    activeState: nubmer;
+    activeState: number = 0;
 
     // 剩余使用次数
     @Column({
@@ -23,7 +23,7 @@ export class ACL {
         default: 0,
         comment: '剩余使用次数'
     })
-    remainTimes: nubmer;
+    remainTimes: number = 0;
 
     // 失效日期
     @Column({
@@ -33,20 +33,20 @@ export class ACL {
         default: '',
         comment: '失效日期'
     })
-    expireData: string;
+    expireData: string = "";
 
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci'
     })
-    updateTime: string;
+    updateTime: string = "";
 
     @ManyToOne(type => User, user => user.acls)
     @JoinColumn()
-    user: User;
+    user: User = new User;
 
     @OneToOne(type => Privilege)
     @JoinColumn()
-    privilege: Privilege;
+    privilege: Privilege = new Privilege;
 }

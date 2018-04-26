@@ -4,7 +4,7 @@ import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 export class Profile {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number = 0;
 
     @Column({
         type: 'varchar',
@@ -13,7 +13,7 @@ export class Profile {
         default: '',
         comment: '性别'
     })
-    gender: string;
+    gender: string = "";
 
     @Column({
         type: 'varchar',
@@ -22,6 +22,6 @@ export class Profile {
         default: '',
         comment: '头像链接'
     })
-    photo: string;
+    photo: string = "";
 
 }

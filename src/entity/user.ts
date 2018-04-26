@@ -8,21 +8,21 @@ import { Profile } from "./profile";
 export class User {
 
     @PrimaryGeneratedColumn()
-    id: number
+    id: number = 0;
 
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci'
     })
-    userName: string;
+    userName: string = "";
 
     @Column({
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci'
     })
-    password: string
+    password: string = "";
 
     @Column({
         type: 'varchar',
@@ -30,7 +30,7 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    firstName: string;
+    firstName: string = "";
 
     @Column({
         type: 'varchar',
@@ -38,7 +38,7 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    lastName: string;
+    lastName: string = "";
 
     @Column({
         type: 'varchar',
@@ -46,13 +46,13 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    email: string
+    email: string = "";
 
     @Column({
         collation: 'utf8mb4_unicode_ci',
         default: false
     })
-    emailVerified: boolean
+    emailVerified: boolean = false;
 
     @Column({
         type: 'varchar',
@@ -60,21 +60,21 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    mobile: string
+    mobile: string = "";
 
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci'
     })
-    createTime: string
+    createTime: string = "";
 
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci'
     })
-    lastLoginTime: string
+    lastLoginTime: string = "";
     
     @Column({
         type: 'varchar',
@@ -82,7 +82,7 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    state: string
+    state: string = "";
 
     @Column({
         type: 'varchar',
@@ -90,7 +90,7 @@ export class User {
         collation: 'utf8mb4_unicode_ci',
         default: ''
     })
-    jwt: string
+    jwt: string = "";
 
     @Column({
         type: 'int',
@@ -98,13 +98,13 @@ export class User {
         default: 0,
         comment: '特殊用户标识'
     })
-    spec: number        
+    spec: number = 0;
 
     @OneToOne(type => Profile)
     @JoinColumn()
-    profile: Profile;
+    profile: Profile = new Profile;
     
     @OneToMany(type => ACL, acl => acl.user)
-    acls: ACL[];
+    acls: ACL[] | undefined;
 
 }
