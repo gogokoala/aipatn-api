@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn} from "typeorm"
+import { ACL } from "./acl";
+import { Profile } from "./profile";
 
 @Entity('user', {
     engine: 'MyISAM'    
@@ -6,7 +8,7 @@ import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 export class User {
 
     @PrimaryGeneratedColumn()
-    uid: string
+    id: number
 
     @Column({
         type: 'varchar',
@@ -78,7 +80,7 @@ export class User {
         type: 'varchar',
         length: 16,
         collation: 'utf8mb4_unicode_ci',
-        default: 'active'
+        default: ''
     })
     state: string
 
@@ -89,5 +91,20 @@ export class User {
         default: ''
     })
     jwt: string
+
+    @Column({
+        type: 'int',
+        collation: 'utf8mb4_unicode_ci',
+        default: 0,
+        comment: '特殊用户标识'
+    })
+    spec: number        
+
+    @OneToOne(type => Profile)
+    @JoinColumn()
+    profile: Profile;
     
+    @OneToMany(type => ACL, acl => acl.user)
+    acls: ACL[];
+
 }
