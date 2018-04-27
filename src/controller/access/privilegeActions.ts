@@ -12,8 +12,59 @@ const jwtSecret = config.get<string>('jwtSecret')
 
 
 /**
- * Middleware register
+ * Middleware
  */
+export class PrivilegeAction { 
+    /* ... */ 
+    constructor() {
+
+    }
+
+    private usrRepository = getManager().getRepository(User);
+    
+    public async getAll(ctx: Context, next: Function) {
+            
+    }
+
+    public async getById(ctx: Context, next: Function) {
+    
+    }
+
+    public async findOne(ctx: Context, next: Function) {
+    
+    }
+
+    public async count(ctx: Context, next: Function) {
+    
+    }
+
+    public async isExists(ctx: Context, next: Function) {
+    
+    }
+
+    public async createNew(ctx: Context, next: Function) {
+    
+    }
+
+    public async update(ctx: Context, next: Function) {
+    
+    }
+    
+    public async updateOrCreate(ctx: Context, next: Function) {
+    
+    }
+    
+    public async updateById(ctx: Context, next: Function) {
+    
+    }
+    
+    public async deleteById(ctx: Context, next: Function) {
+    
+    }
+
+}
+
+
 export async function register (ctx: Context, next: Function) {
     const req = ctx.request;
     const user = req.body;
@@ -80,7 +131,6 @@ export async function register (ctx: Context, next: Function) {
     session.user.jwt = jwtToken
 
     // TODO - 更新日志
-
     ctx.state.session = session
     ctx.state.data = { status: 0, message: "恭喜您！注册成功", token: jwtToken }
 }

@@ -37,17 +37,45 @@ router.get('/ft1', ft1)
 /**
  * User Actions
  */
+/*
 router.get("/user", getAllUsers);
 router.get("/user/:id", getUserById);
 router.get("/user/findOne", userFindOne);
 router.get("/user/count", userCount);
-
 router.head("/user/:id", isUserExists);
-
 router.post("/user", createNewUser);
 router.post("/user/update", updateUsers);
-
 router.put("/user", updateOrCreateUser);
 router.put("/user/:id", updateUserById);
-
 router.delete("/user/:id", deleteUserById);
+*/
+
+/**
+ * Privilege Actions
+ */
+router.get("/privilege", getAllUsers);
+router.get("/privilege/:id", getUserById);
+router.get("/privilege/findOne", userFindOne);
+router.get("/privilege/count", userCount);
+router.head("/privilege/:id", isUserExists);
+router.post("/privilege", createNewUser);
+router.post("/privilege/update", updateUsers);
+router.put("/privilege", updateOrCreateUser);
+router.put("/privilege/:id", updateUserById);
+router.delete("/privilege/:id", deleteUserById);
+
+/**
+ * ACL Actions
+ */
+/*
+router.get("/acl", getAllUsers);
+router.get("/acl/:id", getUserById);
+router.get("/acl/findOne", userFindOne);
+router.get("/acl/count", userCount);
+router.head("/acl/:id", isUserExists);
+router.post("/acl", createNewUser);
+router.post("/acl/update", updateUsers);
+router.put("/acl", updateOrCreateUser);
+router.put("/acl/:id", updateUserById);
+router.delete("/acl/:id", deleteUserById);
+*/
