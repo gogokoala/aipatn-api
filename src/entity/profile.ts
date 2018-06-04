@@ -1,10 +1,12 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
-@Entity()
+@Entity('user', {
+    engine: 'MyISAM'    
+})
 export class Profile {
 
     @PrimaryGeneratedColumn()
-    id: number = 0;
+    id: number;
 
     @Column({
         type: 'varchar',

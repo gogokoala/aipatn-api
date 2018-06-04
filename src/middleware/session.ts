@@ -2,14 +2,14 @@ import { Context } from 'koa'
 import { redisStore } from './redisstore'
 
 import * as Debug from 'debug'
-const debug = Debug('aipatn.session')
+const debug = Debug('middleware.session')
 
 export function session (opts: any = {}) {
     const { key = 'x-session-id', store = redisStore } = opts
 
     return async (ctx: Context, next: Function) => {
-        let id = ctx.cookies.get(key, opts)
-        debug('%s: %s', key, id)
+        let id: string = ctx.cookies.get(key, opts)
+        debug('%s: %o', key, id)
 
         if(!id) {
             ctx.state.session = {}
@@ -17,7 +17,7 @@ export function session (opts: any = {}) {
             ctx.state.session = await store.get(id, ctx)
             
             // check session must be a no-null object
-            if(typeof ctx.state.session !== "object" || ctx.state.session == null) {
+            if(typeof ctx.state.session !== "object" || ctx.state.session === null) {
                 ctx.state.session = {}
             }
         }
@@ -45,6 +45,6 @@ export function session (opts: any = {}) {
         // set/update session
         const sid = await store.set(ctx.state.session, Object.assign({}, opts, {sid: id}), ctx)
         ctx.cookies.set(key, sid, opts)
-        debug('%s: %s', key, sid)
+        debug('%s: %o', key, sid)
     }
 }

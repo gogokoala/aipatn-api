@@ -75,7 +75,7 @@ export async function register (ctx: Context, next: Function) {
     vo = await usrRepository.save(vo)
 
     delete session.vcode
-    session.user.uid = vo.uid
+    session.user.uid = vo.id
     session.user.logged = true
     session.user.jwt = jwtToken
 

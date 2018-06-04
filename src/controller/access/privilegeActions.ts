@@ -1,8 +1,8 @@
 import { Context } from 'koa'
-import { redisStore } from '../middleware/redisstore'
+import { redisStore } from '../../middleware/redisstore'
 import * as Debug from 'debug'
 import { getManager } from "typeorm";
-import { User } from "../entity/user";
+import { User } from "../../entity/user";
 import * as moment from 'moment'
 import * as jwt from 'jsonwebtoken'
 import * as config from 'config'
@@ -126,7 +126,7 @@ export async function register (ctx: Context, next: Function) {
     vo = await usrRepository.save(vo)
 
     delete session.vcode
-    session.user.uid = vo.uid
+    session.user.uid = vo.id
     session.user.logged = true
     session.user.jwt = jwtToken
 

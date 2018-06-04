@@ -1,4 +1,4 @@
-import {Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, OneToOne} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, ManyToOne, JoinColumn, OneToOne} from "typeorm"
 import { User } from "./user";
 import { Privilege } from "./privilege";
 
@@ -6,6 +6,9 @@ import { Privilege } from "./privilege";
     engine: 'MyISAM'    
 })
 export class ACL {
+
+    @PrimaryGeneratedColumn()
+    id: number;
 
     // 激活状态 0-未启用或已停用或已过期
     @Column({

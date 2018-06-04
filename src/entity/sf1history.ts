@@ -6,7 +6,7 @@ import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 export class Sf1History {
 
     @PrimaryGeneratedColumn()
-    id: string
+    id: number;
 
     @Column({
         type: 'varchar',

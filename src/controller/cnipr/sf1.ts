@@ -56,7 +56,7 @@ export async function sf1 (ctx: Context, next: Function) {
         displayCols
     }
     const cacheKey = sha1(JSON.stringify(cache))
-    sf1Resp = await redisStore.get(cacheKey, ctx)
+    sf1Resp = await redisStore.get(cacheKey)
     if (sf1Resp) {
         debug('cached sf1 result = %s, %s', sf1Resp.status, sf1Resp.message)
         ctx.state.data = sf1Resp
@@ -93,7 +93,7 @@ export async function sf1 (ctx: Context, next: Function) {
     sf1Resp = res.data
     debug('sf1 result = %s, %s', sf1Resp.status, sf1Resp.message)
     // redis缓冲数据, 30分钟
-    await redisStore.set(sf1Resp, {sid: cacheKey}, ctx);
+    await redisStore.set(cacheKey, sf1Resp);
     // 
     if (sf1Resp.status === '0') {
         ctx.state.data = sf1Resp

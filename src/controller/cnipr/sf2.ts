@@ -31,7 +31,7 @@ export async function sf2 (ctx: Context, next: Function) {
 
     // 查看缓存
     const cacheKey = pid
-    sf2Resp = await redisStore.get(cacheKey, ctx)
+    sf2Resp = await redisStore.get(cacheKey)
     if (sf2Resp) {
         debug('sf2 data from cached. result = %s, %s', sf2Resp.status, sf2Resp.message)
         ctx.state.data = sf2Resp
@@ -47,7 +47,7 @@ export async function sf2 (ctx: Context, next: Function) {
         ctx.state.data = sf2Resp
 
         // redis缓冲数据, 30分钟
-        await redisStore.set(sf2Resp, {sid: cacheKey}, ctx);
+        await redisStore.set(cacheKey, sf2Resp);
         
         return
     }
@@ -76,7 +76,7 @@ export async function sf2 (ctx: Context, next: Function) {
         ctx.state.data = sf2Resp
 
         // redis缓冲数据, 30分钟
-        await redisStore.set(sf2Resp, {sid: cacheKey}, ctx);
+        await redisStore.set(cacheKey, sf2Resp);
     
 /*        
         // 保存cnipr数据到本地数据库

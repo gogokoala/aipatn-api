@@ -21,17 +21,18 @@ const port = config.get('port')
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection().then(async connection => {
-
+/*
     await oauth2.updateAccessToken()
 
     // 间隔15m检查Cnipr AccessToken一次
     setInterval(async () => {
         await oauth2.updateAccessToken()
-    } , 15 * 60 * 1000)
-
+    } , 30 * 60 * 1000)
+*/
     // create koa app
     const app = new Koa()
 
+    // 跨域CORS
     app.use(cors({
         origin: function (ctx) {
             return '*'
@@ -39,7 +40,7 @@ createConnection().then(async connection => {
         exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
         maxAge: 15,
         credentials: true,
-        allowMethods: ['GET', 'POST'],
+        allowMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
     }))
 
@@ -49,6 +50,7 @@ createConnection().then(async connection => {
     app.use(jwtKoa({ secret: jwtSecret }).unless({
         path: [
             /^\/ping/,
+/*            
             /^\/sid/,
             /^\/vcode/,
             /^\/register/,
@@ -56,6 +58,7 @@ createConnection().then(async connection => {
             /^\/sf1/,
             /^\/sf2/,
             /^\/ft1/,
+*/
         ]
     }))
 
@@ -67,7 +70,8 @@ createConnection().then(async connection => {
 
     // Session处理
     app.use(session())
-
+/*
+    //
     app.use(routeLimiting({ maxAllowedRequest: 4, maxQueueLength: 200 }).unless({
         path: [
             /^\/sid/,
@@ -76,7 +80,7 @@ createConnection().then(async connection => {
             /^\/login/,
         ]
     }))
-
+*/
     // 路由处理
     app.use(router.routes())
     app.use(router.allowedMethods())

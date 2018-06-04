@@ -17,7 +17,6 @@ export async function response (ctx: Context, next: Function) {
             code: ctx.state.code !== undefined ? ctx.state.code : 0,
             data: ctx.state.data !== undefined ? ctx.state.data : {}
         }
-
     } catch (e) {
         // catch 住全局的错误信息
         debug('Catch Error: %o', e)
@@ -38,5 +37,6 @@ export async function response (ctx: Context, next: Function) {
             error: ctx.state.error
         }
     }
-    debug('respose: %o', ctx.body)
+    
+    debug('Respose: %o', ctx.body)
 }

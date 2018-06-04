@@ -32,8 +32,8 @@ class RedisStore {
      * 读取Session值
      * @param sid Session ID
      */
-    async get(sid: string, ctx?: Context) {
-        let data = await this.client.get(`SESSION:${sid}`)
+    async get(sid: string) {
+        let data = await this.client.get(sid)
         return JSON.parse(data)
     }
 
@@ -41,17 +41,16 @@ class RedisStore {
      * 设置Session
      * @param session Session值
      * @param sid Session ID
-     * @param maxAge 最大存在时间(ms),默认30分钟
+     * @param maxAge 最大存在时间(s),默认30分钟
      */
-    async set(session: any, { sid =  this.getID(), maxAge = 1800000 } = {}, ctx?: Context) {
+    async set(sid: string, session: any, { maxAge = 1800 } = {}) {
         try {
-/*
-            if (!sid) {
+            if (typeof sid === undefined || !sid) {
                 sid = this.getID()
             }
-*/            
+            
             // Use redis set EX to automatically drop expired sessions
-            await this.client.set(`SESSION:${sid}`, JSON.stringify(session), 'EX', maxAge / 1000)
+            await this.client.set(sid, JSON.stringify(session), 'EX', maxAge)
         } catch (e) {
         }
         
@@ -62,8 +61,8 @@ class RedisStore {
      * 移除指定sid的Session
      * @param sid Session ID
      */
-    async destroy(sid: string, ctx?: Context) {
-        return await this.client.del(`SESSION:${sid}`);
+    async destroy(sid: string) {
+        return await this.client.del(sid);
     }
 }
 
