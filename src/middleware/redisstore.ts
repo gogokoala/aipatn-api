@@ -6,7 +6,7 @@ import * as uuidv4 from 'uuid/v4'
 /**
  * 使用Redis实现的value
  */
-export class RedisStore {
+class RedisStore {
     private client: Redis.Redis
 
     private host: string
@@ -72,3 +72,5 @@ export class RedisStore {
         return await this.client.del(key);
     }
 }
+
+export const redisStore = new RedisStore();

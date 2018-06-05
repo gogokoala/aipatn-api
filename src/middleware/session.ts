@@ -1,8 +1,7 @@
 import { Context } from 'koa'
-import { RedisStore } from './redisstore'
+import { redisStore } from './redisstore'
 import * as Debug from 'debug'
 
-const redisStore = new RedisStore()
 const debug = Debug('middleware.session')
 
 export function session (opts: any = {}) {

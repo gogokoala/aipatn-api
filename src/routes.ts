@@ -17,7 +17,7 @@ import { ft1 } from './controller/cnipr/ft1'
  */
 export const router = new Router()
 
-router.get('/ping', ping)
+router.get('/public/ping', ping)
 
 /*
 router.get('/sid', getSessionId)

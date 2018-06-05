@@ -15,15 +15,30 @@ export async function response (ctx: Context, next: Function) {
         // 如果写在 ctx.body 为空，则使用 state 作为响应
         ctx.body = ctx.body ? ctx.body : {
             code: ctx.state.code !== undefined ? ctx.state.code : 0,
-            data: ctx.state.data !== undefined ? ctx.state.data : {}
+            data: ctx.state.data !== undefined ? ctx.state.data : { message: 'OK' }
         }
-    } catch (e) {
+    } catch (err) {
         // catch 住全局的错误信息
-        debug('Catch Error: %o', e)
+        debug('Catch Error: %o', err)
 
         // 设置状态码为 500 - 服务端错误
-        ctx.status = 200
-
+        if (err.status) {
+            ctx.status = err.status
+            if (err.status === 401) {
+                ctx.body = {code: err.status, message: 'Unauthorized'}
+            } else if (err.status == 403) {
+                ctx.body = {code: err.status, message: 'Forbidden'}
+            } else if (err.status == 405) {
+                ctx.body = {code: err.status, message: 'Method Not Allowed'}
+            } else {
+                ctx.body = {code: err.status, message: 'Internal Server Error'}
+            }
+        } else {
+            ctx.status = 200
+            let message = err.originalError ? err.originalError.message : err.message
+            ctx.body = {code: -1, message}
+        }
+/*
         // 输出详细的错误信息
         if (!ctx.state.error) {
             ctx.state.error = {
@@ -36,7 +51,8 @@ export async function response (ctx: Context, next: Function) {
             code: -1,
             error: ctx.state.error
         }
+*/        
     }
     
-    debug('Respose: %o', ctx.body)
+    debug('Respose: %s - %o', ctx.status, ctx.body)
 }

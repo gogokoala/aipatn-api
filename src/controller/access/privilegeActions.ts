@@ -1,5 +1,4 @@
 import { Context } from 'koa'
-import { redisStore } from '../../middleware/redisstore'
 import * as Debug from 'debug'
 import { getManager } from "typeorm";
 import { User } from "../../entity/user";

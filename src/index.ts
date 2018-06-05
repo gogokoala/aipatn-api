@@ -32,6 +32,9 @@ createConnection().then(async connection => {
     // create koa app
     const app = new Koa()
 
+    // 使用响应处理中间件
+    app.use(response)
+
     // 跨域CORS
     app.use(cors({
         origin: function (ctx) {
@@ -49,8 +52,9 @@ createConnection().then(async connection => {
     const jwtSecret = config.get<string>('jwtSecret')
     app.use(jwtKoa({ secret: jwtSecret }).unless({
         path: [
-            /^\/ping/,
+            /^\/public/,
 /*            
+            /^\/ping/,
             /^\/sid/,
             /^\/vcode/,
             /^\/register/,
@@ -61,9 +65,6 @@ createConnection().then(async connection => {
 */
         ]
     }))
-
-    // 使用响应处理中间件
-    app.use(response)
 
     // 解析请求体
     app.use(bodyParser())    
