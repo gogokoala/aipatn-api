@@ -8,7 +8,7 @@ import { Privilege } from "./privilege";
 export class ACL {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number = 0;
 
     // 激活状态 0-未启用或已停用或已过期
     @Column({

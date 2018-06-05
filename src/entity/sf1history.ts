@@ -6,53 +6,53 @@ import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 export class Sf1History {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number = 0;
 
     @Column({
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci'
     })
-    uid: string
+    uid: string = ''
 
     @Column({
         type: 'varchar',
         length: 128,
         collation: 'utf8mb4_unicode_ci'
     })
-    title: string
+    title: string = ''
 
     @Column({
         type: 'varchar',
         length: 256,
         collation: 'utf8mb4_unicode_ci'
     })
-    summary: string
+    summary: string = ''
 
     @Column({
         type: 'varchar',
         length: 256,
         collation: 'utf8mb4_unicode_ci'
     })
-    dbs: string
+    dbs: string = ''
 
     @Column({
         type: 'varchar',
         length: 2000,
         collation: 'utf8mb4_unicode_ci'
     })
-    context: string
+    context: string = ''
     
     @Column({
         type: 'varchar',
         length: 32,
         collation: 'utf8mb4_unicode_ci'
     })
-    createTime: string
+    createTime: string = ''
     
     @Column({
         type: 'int',
         collation: 'utf8mb4_unicode_ci'
     })
-    recordNum: number    
+    recordNum: number = 0
 }

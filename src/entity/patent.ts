@@ -11,7 +11,7 @@ export class Patent {
         collation: 'utf8mb4_unicode_ci',
         comment: '专利信息ID'
     })
-    pid: string
+    pid: string = ''
 
     @Column({
         type: 'varchar',
@@ -20,7 +20,7 @@ export class Patent {
         default: '',
         comment: 'sysid'
     })
-    sysid: string
+    sysid: string = ''
 
     @Column({
         type: 'varchar',
@@ -29,7 +29,7 @@ export class Patent {
         default: '',
         comment: '申请号'
     })
-    appNumber: string
+    appNumber: string = ''
 
     @Column({
         type: 'varchar',
@@ -38,7 +38,7 @@ export class Patent {
         default: '',
         comment: '公开（公告）号'
     })
-    pubNumber: string
+    pubNumber: string = ''
 
     @Column({
         type: 'varchar',
@@ -47,7 +47,7 @@ export class Patent {
         default: '',
         comment: '申请日'
     })
-    appDate: string
+    appDate: string = ''
 
     @Column({
         type: 'varchar',
@@ -56,7 +56,7 @@ export class Patent {
         default: '',
         comment: '公开（公告）日'
     })
-    pubDate: string
+    pubDate: string = ''
 
     @Column({
         type: 'varchar',
@@ -65,7 +65,7 @@ export class Patent {
         default: '',
         comment: '名称'
     })
-    title: string
+    title: string = ''
 
     @Column({
         type: 'simple-array',
@@ -73,7 +73,7 @@ export class Patent {
         nullable: true,
         comment: '分类号'
     })
-    ipc: string[]
+    ipc: string[] = []
 
     @Column({
         type: 'simple-array',
@@ -81,7 +81,7 @@ export class Patent {
         nullable: true,
         comment: '申请（专利权）人'
     })
-    applicantName: string[]
+    applicantName: string[] = []
 
     @Column({
         type: 'simple-array',
@@ -89,7 +89,7 @@ export class Patent {
         nullable: true,
         comment: '发明（设计）人'
     })
-    inventroName: string[]
+    inventroName: string[] = []
 
     @Column({
         type: 'simple-array',
@@ -97,7 +97,7 @@ export class Patent {
         nullable: true,
         comment: '优先权'
     })
-    priority: string[]
+    priority: string[] = []
 
     @Column({
         type: 'varchar',
@@ -106,7 +106,7 @@ export class Patent {
         default: '',
         comment: '专利代理机构'
     })
-    agencyName: string
+    agencyName: string = ''
 
     @Column({
         type: 'simple-array',
@@ -114,7 +114,7 @@ export class Patent {
         nullable: true,
         comment: '代理人'
     })
-    agentName: string
+    agentName: string = ''
 
     @Column({
         type: 'varchar',
@@ -123,7 +123,7 @@ export class Patent {
         default: '',
         comment: '省'
     })
-    addrProvince: string
+    addrProvince: string = ''
 
     @Column({
         type: 'varchar',
@@ -132,7 +132,7 @@ export class Patent {
         default: '',
         comment: '市'
     })
-    addrCity: string
+    addrCity: string = ''
 
     @Column({
         type: 'varchar',
@@ -141,7 +141,7 @@ export class Patent {
         default: '',
         comment: '县'
     })
-    addrCounty: string
+    addrCounty: string = ''
 
     @Column({
         type: 'varchar',
@@ -150,7 +150,7 @@ export class Patent {
         default: '',
         comment: '地址'
     })
-    address: string
+    address: string = ''
 
     @Column({
         type: 'int',
@@ -158,7 +158,7 @@ export class Patent {
         default: 0,
         comment: '专利类型'
     })
-    patType: number
+    patType: number = 0
 
     @Column({
         type: 'varchar',
@@ -167,7 +167,7 @@ export class Patent {
         default: '',
         comment: '国际申请'
     })
-    iapp: string
+    iapp: string = ''
 
     @Column({
         type: 'varchar',
@@ -176,7 +176,7 @@ export class Patent {
         default: '',
         comment: '国际公布'
     })
-    ipub: string
+    ipub: string  = ''
 
     @Column({
         type: 'varchar',
@@ -185,7 +185,7 @@ export class Patent {
         default: '',
         comment: '进入国家日期'
     })
-    den: string
+    den: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -193,7 +193,7 @@ export class Patent {
         nullable: true,
         comment: '摘要'
     })
-    abs: string
+    abs: string = ''
 
     @Column({
         type: 'varchar',
@@ -202,7 +202,7 @@ export class Patent {
         default: '',
         comment: '最新法律状态'
     })
-    lprs: string
+    lprs: string = ''
 
     @Column({
         type: 'varchar',
@@ -211,7 +211,7 @@ export class Patent {
         default: '',
         comment: '摘要附图存储路径'
     })
-    draws: string
+    draws: string = ''
     
     @Column({
         type: 'varchar',
@@ -220,7 +220,7 @@ export class Patent {
         default: '',
         comment: '专利所属库名'
     })
-    dbName: string
+    dbName: string = ''
 
     @Column({
         type: 'varchar',
@@ -229,7 +229,7 @@ export class Patent {
         default: '',
         comment: '发布路径'
     })
-    tifDistributePath: string
+    tifDistributePath: string = ''
 
     @Column({
         type: 'int',
@@ -237,7 +237,7 @@ export class Patent {
         default: 0,
         comment: '页数'
     })
-    pages: number
+    pages: number = 0
 
     @Column({
         type: 'varchar',
@@ -246,7 +246,7 @@ export class Patent {
         default: '',
         comment: '相似度'
     })
-    relevance: string
+    relevance: string = ''
 
     @Column({
         type: 'varchar',
@@ -255,7 +255,7 @@ export class Patent {
         default: '',
         comment: '国省代码'
     })
-    proCode: string
+    proCode: string = ''
 
     @Column({
         type: 'varchar',
@@ -264,7 +264,7 @@ export class Patent {
         default: '',
         comment: '申请国代码'
     })
-    appCoun: string
+    appCoun: string = ''
 
     @Column({
         type: 'varchar',
@@ -273,7 +273,7 @@ export class Patent {
         default: '',
         comment: '公报发布路径'
     })
-    gazettePath: string
+    gazettePath: string = ''
 
     @Column({
         type: 'int',
@@ -281,7 +281,7 @@ export class Patent {
         default: 0,
         comment: '公报所在页'
     })
-    gazettePage: number
+    gazettePage: number = 0
 
     @Column({
         type: 'int',
@@ -289,7 +289,7 @@ export class Patent {
         default: 0,
         comment: '公报翻页信息'
     })
-    gazetteCount: number
+    gazetteCount: number = 0
 
     @Column({
         type: 'varchar',
@@ -298,7 +298,7 @@ export class Patent {
         default: '',
         comment: '专利状态码'
     })
-    statusCode: string
+    statusCode: string = ''
 
     @Column({
         type: 'varchar',
@@ -307,7 +307,7 @@ export class Patent {
         default: '',
         comment: '法律状态'
     })
-    legalStatus: string
+    legalStatus: string = ''
 
     @Column({
         type: 'varchar',
@@ -316,7 +316,7 @@ export class Patent {
         default: '',
         comment: '主分类号'
     })
-    mainIpc: string
+    mainIpc: string = ''
 
     @Column({
         type: 'varchar',
@@ -325,7 +325,7 @@ export class Patent {
         default: '',
         comment: '国家资源'
     })
-    appResource: string
+    appResource: string = ''
 
     @Column({
         type: 'varchar',
@@ -334,7 +334,7 @@ export class Patent {
         default: '',
         comment: '同族号'
     })
-    familyNo: string
+    familyNo: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -342,7 +342,7 @@ export class Patent {
         nullable: true,
         comment: '主权项'
     })
-    cl: string
+    cl: string = ''
 
     @Column({
         type: 'text',
@@ -350,7 +350,7 @@ export class Patent {
         nullable: true,
         comment: '关键词'
     })
-    patentWords: string
+    patentWords: string = ''
 
     //sf2
     @Column({
@@ -359,7 +359,7 @@ export class Patent {
         nullable: true,
         comment: '自动摘要'
     })
-    autoAbs: string
+    autoAbs: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -367,7 +367,7 @@ export class Patent {
         nullable: true,
         comment: '权利要求书'
     })
-    claimsPath: string
+    claimsPath: string = ''
 
     @Column({
         type: 'varchar',
@@ -376,7 +376,7 @@ export class Patent {
         default: '',
         comment: ''
     })
-    cipPath: string
+    cipPath: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -384,7 +384,7 @@ export class Patent {
         nullable: true,
         comment: '说明书'
     })
-    instrPath: string
+    instrPath: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -392,7 +392,7 @@ export class Patent {
         nullable: true,
         comment: '说明书附图'
     })
-    instrTif: string
+    instrTif: string = ''
 
     @Column({
         type: 'varchar',
@@ -401,7 +401,7 @@ export class Patent {
         default: '',
         comment: '审查员'
     })
-    censor: string
+    censor: string = ''
 
     @Column({
         type: 'mediumtext',
@@ -409,7 +409,7 @@ export class Patent {
         nullable: true,
         comment: '参考文献'
     })
-    refDoc: string
+    refDoc: string = ''
 
     @Column({
         type: 'varchar',
@@ -418,7 +418,7 @@ export class Patent {
         default: '',
         comment: '优先权日'
     })
-    priorityDate: string
+    priorityDate: string = ''
 
     @Column({
         type: 'varchar',
@@ -427,7 +427,7 @@ export class Patent {
         default: '',
         comment: '颁证日'
     })
-    issueDate: string
+    issueDate: string = ''
 
     @Column({
         type: 'varchar',
@@ -436,7 +436,7 @@ export class Patent {
         default: '',
         comment: '本国主分类号'
     })
-    initMainIpc: string
+    initMainIpc: string = ''
 
     @Column({
         type: 'varchar',
@@ -445,7 +445,7 @@ export class Patent {
         default: '',
         comment: '本国分类号'
     })
-    initIpc: string
+    initIpc: string = ''
 
     @Column({
         type: 'varchar',
@@ -454,5 +454,5 @@ export class Patent {
         default: '',
         comment: '分案原申请号'
     })
-    divideInitAppNo: string
+    divideInitAppNo: string = ''
 }

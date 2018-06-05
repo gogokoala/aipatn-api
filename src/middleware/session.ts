@@ -1,23 +1,24 @@
 import { Context } from 'koa'
-import { redisStore } from './redisstore'
-
+import { RedisStore } from './redisstore'
 import * as Debug from 'debug'
+
+const redisStore = new RedisStore()
 const debug = Debug('middleware.session')
 
 export function session (opts: any = {}) {
     const { key = 'x-session-id', store = redisStore } = opts
 
     return async (ctx: Context, next: Function) => {
-        let id: string = ctx.cookies.get(key, opts)
-        debug('%s: %o', key, id)
+        let sessionId: string = ctx.cookies.get(key, opts)
+        debug('%s: %s', key, sessionId)
 
-        if(!id) {
+        if (!sessionId) {
             ctx.state.session = {}
         } else {
-            ctx.state.session = await store.get(id, ctx)
+            ctx.state.session = await store.get(sessionId)
             
             // check session must be a no-null object
-            if(typeof ctx.state.session !== "object" || ctx.state.session === null) {
+            if(typeof ctx.state.session !== "object" || !ctx.state.session) {
                 ctx.state.session = {}
             }
         }
@@ -36,15 +37,16 @@ export function session (opts: any = {}) {
         }
 
         // need clear old session
-        if(id && !ctx.state.session) {
-            debug('clear old session, %s', id)
-            await store.destroy(id, ctx)
+        if(sessionId && !ctx.state.session) {
+            debug('clear old session, %s', sessionId)
+            await store.destroy(sessionId)
             return
         }
 
         // set/update session
-        const sid = await store.set(ctx.state.session, Object.assign({}, opts, {sid: id}), ctx)
+        const sid = await store.set(sessionId, ctx.state.session, Object.assign({}, opts))
         ctx.cookies.set(key, sid, opts)
         debug('%s: %o', key, sid)
     }
 }
+

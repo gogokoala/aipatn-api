@@ -25,7 +25,7 @@ class OAuth2Config {
     }
 }
 
-class OAuth2Response {
+interface OAuth2Response {
     status: number
     message: string
     expires_in: number
@@ -81,7 +81,9 @@ class OAuth2Instance {
             //  access_token的过期时长，单位ms,缺省24小时 
             const expires = token.expiresIn ? token.expiresIn * 1000 : 86400 * 1000
             // access_token有效期少于1天时，即自动更新
-            const remaining = expires - (moment().valueOf() - moment(token.lastRefreshTime, 'YYYY-MM-DD HH:mm:ss').valueOf()) - 86400 * 1000
+            const 
+            
+            remaining = expires - (moment().valueOf() - moment(token.lastRefreshTime, 'YYYY-MM-DD HH:mm:ss').valueOf()) - 86400 * 1000
             if (remaining <= 0) {
                 // 过期
                 debug('access_token expired. remaining = %d', remaining)

@@ -4,9 +4,9 @@ import * as Redis from 'ioredis'
 import * as uuidv4 from 'uuid/v4'
 
 /**
- * 使用Redis实现的Session
+ * 使用Redis实现的value
  */
-class RedisStore {
+export class RedisStore {
     private client: Redis.Redis
 
     private host: string
@@ -29,41 +29,46 @@ class RedisStore {
     }
     
     /**
-     * 读取Session值
-     * @param sid Session ID
+     * 读取value值
+     * @param key
      */
-    async get(sid: string) {
-        let data = await this.client.get(sid)
-        return JSON.parse(data)
+    async get(key: string) {
+        let result: any
+
+        if (key) {
+            let data = await this.client.get(key)
+            result = JSON.parse(data)
+        } else {
+            result = undefined
+        }
+        return result;
     }
 
     /**
-     * 设置Session
-     * @param session Session值
-     * @param sid Session ID
+     * 设置value
+     * @param value value值
+     * @param key Unique ID
      * @param maxAge 最大存在时间(s),默认30分钟
      */
-    async set(sid: string, session: any, { maxAge = 1800 } = {}) {
+    async set(key: string, value: any, { maxAge = 1800 } = {}) {
         try {
-            if (typeof sid === undefined || !sid) {
-                sid = this.getID()
+            if (!key) {
+                key = this.getID()
             }
             
-            // Use redis set EX to automatically drop expired sessions
-            await this.client.set(sid, JSON.stringify(session), 'EX', maxAge)
+            // Use redis set EX to automatically drop expired values
+            await this.client.set(key, JSON.stringify(value), 'EX', maxAge)
         } catch (e) {
         }
         
-        return sid;
+        return key;
     }
 
     /**
-     * 移除指定sid的Session
-     * @param sid Session ID
+     * 移除指定key的value
+     * @param key value ID
      */
-    async destroy(sid: string) {
-        return await this.client.del(sid);
+    async destroy(key: string) {
+        return await this.client.del(key);
     }
 }
-
-export const redisStore =  new RedisStore()
