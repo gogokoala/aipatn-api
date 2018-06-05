@@ -48,9 +48,9 @@ class RedisStore {
      * 设置value
      * @param value value值
      * @param key Unique ID
-     * @param maxAge 最大存在时间(s),默认30分钟
+     * @param maxAge 最大存在时间(s),默认10分钟
      */
-    async set(key: string, value: any, { maxAge = 1800 } = {}) {
+    async set(key: string, value: any, maxAge: number = 600) {
         try {
             if (!key) {
                 key = this.getID()
